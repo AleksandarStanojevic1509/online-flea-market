@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  ms_api:
+    container_name: ms_api
+    restart: always
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    build:
+      context: ./api
+    ports:
+      - 3000:3000
+    links:
+      - mysql
+    environment:
+      WAIT_HOSTS: mysql:3306
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    env_file: .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+      
+volumes:
+  mysql_data:
+    driver: local
