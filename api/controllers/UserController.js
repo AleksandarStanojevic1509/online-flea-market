@@ -5,13 +5,14 @@ const { to, ReE, ReS, TERR }    = require('../services/utility');
 const CONFIG                    = require('../config');
 const bcrypt                    = require('bcrypt');
 const jwt                       = require('jsonwebtoken');
-
+const redis                     = require('../services/redis').redis;
 
 
 exports.getAllUsers = async (req, res) => {
     console.log('TESSST')
     let product = await User.findAll()
     console.log (product)
+    redis.set('test', 'test')
     res.send(product)
 }
 

@@ -2,8 +2,8 @@ version: '3'
 
 services:
 
-  ms_api:
-    container_name: ms_api
+  api:
+    container_name: api
     restart: always
     stdin_open: true # docker run -i
     tty: true        # docker run -t
@@ -13,6 +13,7 @@ services:
       - 3000:3000
     links:
       - mysql
+      - redis
     environment:
       WAIT_HOSTS: mysql:3306
 
@@ -24,7 +25,18 @@ services:
     env_file: .env
     volumes:
       - mysql_data:/var/lib/mysql
+
+  redis:
+    container_name: redis
+    image: redis:5.0.5-alpine
+    ports:
+      - 6379:6379
+    env_file: .env
+    volumes:
+      - redis_data:/var/lib/redis
       
 volumes:
   mysql_data:
+    driver: local
+  redis_data:
     driver: local
